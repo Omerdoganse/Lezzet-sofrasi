@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezzet Sofrası</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GENEL AYARLAR --- */
+        body { margin: 0; padding: 0; background-color: #0d0d0d; color: #e0e0e0; font-family: 'Lato', sans-serif; -webkit-font-smoothing: antialiased; }
+        .mobile-container { max-width: 480px; margin: 0 auto; padding-bottom: 50px; background-color: #0d0d0d; min-height: 100vh; }
+        
+        /* HEADER */
+        header { text-align: center; padding: 30px 20px; background: linear-gradient(to bottom, #1a1a1a, #0d0d0d); border-bottom: 1px solid #d4af37; position: sticky; top: 0; z-index: 100; }
+        h1 { font-family: 'Playfair Display', serif; color: #d4af37; font-size: 2rem; margin: 0; letter-spacing: 2px; }
+        .subtitle { font-size: 0.8rem; color: #888; margin-top: 5px; font-style: italic; }
+        
+        /* BAŞLIKLAR */
+        .section-title { text-align: center; font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.5rem; margin: 40px 0 20px 0; position: relative; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 2px; background-color: #d4af37; margin: 10px auto 0; }
+
+        /* YEMEK KARTLARI */
+        .food-card { margin: 0 15px 30px 15px; background-color: #1a1a1a; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); display: flex; flex-direction: column; }
+        /* Resim Yolu Ayarı */
+        .food-img { width: 100%; height: 230px; object-fit: cover; display: block; opacity: 0.9; transition: opacity 0.3s; background-color: #333; }
+        .food-card:hover .food-img { opacity: 1; }
+        
+        .food-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .food-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .food-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: bold; color: #fff; margin: 0; }
+        .food-price { color: #d4af37; font-weight: bold; font-size: 1.1rem; white-space: nowrap; }
+        .food-desc { font-size: 0.9rem; color: #aaa; line-height: 1.5; margin: 0 0 20px 0; }
+        .btn-detail { width: 100%; padding: 12px; background-color: transparent; border: 1px solid #d4af37; color: #d4af37; border-radius: 8px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-detail:hover { background-color: #d4af37; color: #000; }
+
+        /* İÇECEKLER */
+        .drinks-container { padding: 0 15px; }
+        .drink-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #333; gap: 15px; }
+        .drink-item:last-child { border-bottom: none; }
+        .drink-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; border: 1px solid #333; background-color: #333; }
+        .drink-details { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; }
+        .drink-left { display: flex; flex-direction: column; }
+        .drink-name { font-size: 1rem; color: #fff; font-weight: 500; }
+        .drink-desc { font-size: 0.75rem; color: #666; margin-top: 3px; }
+        .drink-price { color: #d4af37; font-weight: bold; font-size: 1.1rem; }
+
+        /* MODAL */
+        #recipe-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; animation: fadeIn 0.3s; backdrop-filter: blur(5px); }
+        .modal-content { background-color: #1e1e1e; margin: 5% auto; padding: 30px 20px; width: 85%; max-width: 500px; border-radius: 15px; border: 1px solid #333; position: relative; box-shadow: 0 0 30px rgba(212, 175, 55, 0.1); }
+        .close-btn { position: absolute; top: 15px; right: 20px; color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .close-btn:hover { color: #d4af37; transform: rotate(90deg); }
+        .modal-title { font-family: 'Playfair Display', serif; color: #d4af37; font-size: 1.8rem; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; text-align: center; }
+        .modal-section-head { color: #fff; font-size: 1.1rem; margin-top: 25px; margin-bottom: 10px; font-weight: bold; }
+        .modal-text { color: #ccc; line-height: 1.7; font-size: 0.95rem; text-align: justify; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        footer { text-align: center; padding: 40px 20px; color: #555; font-size: 0.8rem; border-top: 1px solid #333; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <header>
+            <h1>LEZZET SOFRASI</h1>
+            <div class="subtitle">Anadolu'nun Seçkin Lezzetleri</div>
+        </header>
+
+        <h2 class="section-title">Ana Yemekler</h2>
+
+        <div class="food-card">
+            <img src="images/adana.jpg" alt="Adana Kebap" class="food-img">
+            <div class="food-info">
+                <div class="food-header"><h3 class="food-name">Zırh Adana</h3><span class="food-price">360 ₺</span></div>
+                <p class="food-desc">Zırh kıyma ve özel baharatların ateşle dansı.</p>
+                <button class="btn-detail" onclick="openModal('adana')">HİKAYESİ & YEME ADABI ➜</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="images/iskender.jpg" alt="İskender Kebap" class="food-img">
+            <div class="food-info">
+                <div class="food-header"><h3 class="food-name">Bursa İskender</h3><span class="food-price">390 ₺</span></div>
+                <p class="food-desc">Özel pide, döner eti, domates sosu ve kızgın tereyağı.</p>
+                <button class="btn-detail" onclick="openModal('iskender')">HİKAYESİ & SUNUM ➜</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="images/tavuk.jpg" alt="Tavuk Izgara" class="food-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Chicken_shish_kebab.jpg/640px-Chicken_shish_kebab.jpg'">
+            <div class="food-info">
+                <div class="food-header"><h3 class="food-name">Tavuk Izgara</h3><span class="food-price">320 ₺</span></div>
+                <p class="food-desc">Özel marinasyonlu, yumuşacık but ızgara.</p>
+                <button class="btn-detail" onclick="openModal('tavuk')">MARİNASYON & SUNUM ➜</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="images/beyti.jpg" alt="Beyti Sarma" class="food-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Beyti_kebab_served.jpg/640px-Beyti_kebab_served.jpg'">
+            <div class="food-info">
+                <div class="food-header"><h3 class="food-name">Beyti Sarma</h3><span class="food-price">420 ₺</span></div>
+                <p class="food-desc">Tereyağı, domates sosu ve yoğurdun muhteşem uyumu.</p>
+                <button class="btn-detail" onclick="openModal('beyti')">TARİHÇESİ & YEME ŞEKLİ ➜</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="images/lahmacun.jpg" alt="Lahmacun" class="food-img">
+            <div class="food-info">
+                <div class="food-header"><h3 class="food-name">Taş Fırın Lahmacun</h3><span class="food-price">110 ₺</span></div>
+                <p class="food-desc">Çıtır hamur, bol malzeme, taş fırın lezzeti.</p>
+                <button class="btn-detail" onclick="openModal('lahmacun')">PİŞİRME & YEME ADABI ➜</button>
+            </div>
+        </div>
+
+
+        <h2 class="section-title">İçecekler</h2>
+        
+        <div class="drinks-container">
+            <div class="drink-item">
+                <img src="images/ayran.jpg" alt="Ayran" class="drink-img">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Yayık Ayranı</span><span class="drink-desc">Bakır kupa ile</span></div><span class="drink-price">45 ₺</span></div>
+            </div>
+
+            <div class="drink-item">
+                <img src="images/salgam.jpg" alt="Şalgam" class="drink-img">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Şalgam Suyu</span><span class="drink-desc">Acılı/Acısız</span></div><span class="drink-price">40 ₺</span></div>
+            </div>
+
+            <div class="drink-item">
+                <img src="images/kola.jpg" alt="Kola" class="drink-img">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Kutu İçecekler</span><span class="drink-desc">Pepsi, Yedigün</span></div><span class="drink-price">57 ₺</span></div>
+            </div>
+
+            <div class="drink-item">
+                <img src="images/su.jpg" alt="Su" class="drink-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Glass_of_Water.JPG/320px-Glass_of_Water.JPG'">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Su</span><span class="drink-desc">Cam şişe</span></div><span class="drink-price">20 ₺</span></div>
+            </div>
+
+            <div class="drink-item">
+                <img src="images/kahve.jpg" alt="Türk Kahvesi" class="drink-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Türk_kahvesi.jpg/320px-Türk_kahvesi.jpg'">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Türk Kahvesi</span><span class="drink-desc">Çifte kavrulmuş</span></div><span class="drink-price">60 ₺</span></div>
+            </div>
+
+            <div class="drink-item">
+                <img src="images/cay.jpg" alt="Çay" class="drink-img">
+                <div class="drink-details"><div class="drink-left"><span class="drink-name">Çay</span><span class="drink-desc">Taze demli</span></div><span class="drink-price">25 ₺</span></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Afiyet Olsun!</p>
+            <p style="color: #d4af37;">Wi-Fi: LezzetMisafir / Şifre: 123456</p>
+        </footer>
+    </div>
+
+    <div id="recipe-modal"><div class="modal-content"><span class="close-btn" onclick="closeModal()">&times;</span><div id="modal-body"></div></div></div>
+
+    <script>
+        const foodData = {
+            'adana': `<h2 class="modal-title">Zırh Adana Kebap</h2><div class="modal-section-head">📜 Lezzet Hikayesi & Tarif</div><p class="modal-text">Gerçek Adana kebabının sırrı, makine kullanılmadan "Zırh" adı verilen büyük bıçakla elde kıyılan ettedir.</p><div class="modal-section-head">🍴 Adabıyla Nasıl Yenir?</div><p class="modal-text">Adana kebap, tabakta çatalla yenmez! Yanında gelen sıcak lavaşı tabağa yayın. Dürüm yapın.</p>`,
+            
+            'iskender': `<h2 class="modal-title">Bursa İskender</h2><div class="modal-section-head">📜 Lezzet Hikayesi & Tarif</div><p class="modal-text">Bursa'nın meşhur lezzeti. Tabağın altına özel pideler döşenir, üzerine ince döner dilimleri dizilir. Domates sosu ve kızgın tereyağı ile servis edilir.</p><div class="modal-section-head">🍴 Adabıyla Nasıl Yenir?</div><p class="modal-text">Yanındaki yoğurtla birlikte yenir. Tereyağı masada dökülürken o sesi dinlemek adettendir.</p>`,
+            
+            'tavuk': `<h2 class="modal-title">Tavuk Izgara</h2><div class="modal-section-head">📜 Lezzet Hikayesi & Tarif</div><p class="modal-text">Tavuk ızgaramızın yumuşak olmasının sırrı marinasyonundadır. 24 saat bekletilir.</p><div class="modal-section-head">🍴 Adabıyla Nasıl Yenir?</div><p class="modal-text">Sıcak tüketilmelidir. Közlenmiş domates ile mükemmel gider.</p>`,
+            
+            'beyti': `<h2 class="modal-title">Beyti Sarma</h2><div class="modal-section-head">📜 Lezzet Hikayesi & Tarif</div><p class="modal-text">İncecik lavaşa sarılıp pişirilmesiyle hazırlanır. Üzerine kızgın tereyağı dökülür.</p><div class="modal-section-head">🍴 Adabıyla Nasıl Yenir?</div><p class="modal-text">Tabağın ortasındaki yoğurda hafifçe banarak yemeniz gerekir.</p>`,
+            
+            'lahmacun': `<h2 class="modal-title">Taş Fırın Lahmacun</h2><div class="modal-section-head">📜 Lezzet Hikayesi & Tarif</div><p class="modal-text">Odun ateşinde yanan taş fırında sadece 3-4 dakikada pişer.</p><div class="modal-section-head">🍴 Adabıyla Nasıl Yenir?</div><p class="modal-text">Lahmacun bıçakla kesilmez! Rulo yapılarak elle yenir.</p>`
+        };
+        function openModal(t){const m=document.getElementById('recipe-modal'),b=document.getElementById('modal-body');b.innerHTML=foodData[t];m.style.display="block";}
+        function closeModal(){document.getElementById('recipe-modal').style.display="none";}
+        window.onclick=function(e){if(e.target==document.getElementById('recipe-modal'))closeModal();}
+    </script>
+</body>
+</html>
