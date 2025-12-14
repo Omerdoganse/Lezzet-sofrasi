@@ -23,7 +23,6 @@
 
         /* YEMEK KARTLARI */
         .food-card { margin: 0 15px 30px 15px; background-color: #1a1a1a; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); display: flex; flex-direction: column; }
-        /* Resim Yolu Ayarı */
         .food-img { width: 100%; height: 230px; object-fit: cover; display: block; opacity: 0.9; transition: opacity 0.3s; background-color: #333; }
         .food-card:hover .food-img { opacity: 1; }
         
@@ -37,14 +36,46 @@
 
         /* İÇECEKLER */
         .drinks-container { padding: 0 15px; }
-        .drink-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #333; gap: 15px; }
+        
+        /* İçecek kutusunu biraz esnek yaptık ki sağ tarafa fiyatlar sığsın */
+        .drink-item { 
+            display: flex; 
+            align-items: flex-start; /* Üstten hizala */
+            padding: 15px 0; 
+            border-bottom: 1px solid #333; 
+            gap: 15px; 
+        }
         .drink-item:last-child { border-bottom: none; }
+        
         .drink-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; border: 1px solid #333; background-color: #333; }
-        .drink-details { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; }
+        
+        .drink-details { 
+            flex-grow: 1; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; /* Fiyatları yukarı hizala */
+        }
+        
         .drink-left { display: flex; flex-direction: column; }
         .drink-name { font-size: 1rem; color: #fff; font-weight: 500; }
         .drink-desc { font-size: 0.75rem; color: #666; margin-top: 3px; }
-        .drink-price { color: #d4af37; font-weight: bold; font-size: 1.1rem; }
+        
+        /* --- YENİ EKLENEN FİYAT LİSTESİ STİLİ --- */
+        .price-list {
+            display: flex;
+            flex-direction: column; /* Alt alta diz */
+            align-items: flex-end; /* Sağa yasla */
+            gap: 5px; /* Aralarındaki boşluk */
+        }
+        
+        .price-row {
+            font-size: 0.9rem;
+            display: flex;
+            gap: 8px;
+        }
+
+        .size-label { color: #888; font-size: 0.8rem; } /* Boyut yazısı (330ml) gri olsun */
+        .price-label { color: #d4af37; font-weight: bold; } /* Fiyat altın sarısı olsun */
 
         /* MODAL */
         #recipe-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; animation: fadeIn 0.3s; backdrop-filter: blur(5px); }
@@ -117,34 +148,73 @@
         <h2 class="section-title">İçecekler</h2>
         
         <div class="drinks-container">
+            
             <div class="drink-item">
                 <img src="images/ayran.jpg" alt="Ayran" class="drink-img">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Yayık Ayranı</span><span class="drink-desc">Bakır kupa ile</span></div><span class="drink-price">45 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Yayık Ayranı</span><span class="drink-desc">Bol Köpüklü</span></div>
+                    
+                    <div class="price-list">
+                        <div class="price-row"><span class="size-label">Bardak</span> <span class="price-label">45 ₺</span></div>
+                        <div class="price-row"><span class="size-label">Sürahi</span> <span class="price-label">120 ₺</span></div>
+                    </div>
+                </div>
             </div>
 
             <div class="drink-item">
                 <img src="images/salgam.jpg" alt="Şalgam" class="drink-img">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Şalgam Suyu</span><span class="drink-desc">Acılı/Acısız</span></div><span class="drink-price">40 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Şalgam Suyu</span><span class="drink-desc">Acılı / Acısız</span></div>
+                    
+                    <div class="price-list">
+                        <div class="price-row"><span class="size-label">Bardak</span> <span class="price-label">40 ₺</span></div>
+                        <div class="price-row"><span class="size-label">Şişe (1L)</span> <span class="price-label">90 ₺</span></div>
+                    </div>
+                </div>
             </div>
 
             <div class="drink-item">
                 <img src="images/kola.jpg" alt="Kola" class="drink-img">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Kutu İçecekler</span><span class="drink-desc">Pepsi, Yedigün</span></div><span class="drink-price">57 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Kola / Fanta</span><span class="drink-desc">Soğuk Servis</span></div>
+                    
+                    <div class="price-list">
+                        <div class="price-row"><span class="size-label">330 ml</span> <span class="price-label">57 ₺</span></div>
+                        <div class="price-row"><span class="size-label">1 L</span> <span class="price-label">90 ₺</span></div>
+                    </div>
+                </div>
             </div>
 
             <div class="drink-item">
                 <img src="images/su.jpg" alt="Su" class="drink-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Glass_of_Water.JPG/320px-Glass_of_Water.JPG'">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Su</span><span class="drink-desc">Cam şişe</span></div><span class="drink-price">20 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Su</span><span class="drink-desc">Cam şişe</span></div>
+                    
+                    <div class="price-list">
+                        <div class="price-row"><span class="size-label">0.5 L</span> <span class="price-label">20 ₺</span></div>
+                        <div class="price-row"><span class="size-label">1.5 L</span> <span class="price-label">40 ₺</span></div>
+                    </div>
+                </div>
             </div>
 
             <div class="drink-item">
                 <img src="images/kahve.jpg" alt="Türk Kahvesi" class="drink-img" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Türk_kahvesi.jpg/320px-Türk_kahvesi.jpg'">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Türk Kahvesi</span><span class="drink-desc">Çifte kavrulmuş</span></div><span class="drink-price">60 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Türk Kahvesi</span><span class="drink-desc">Çifte kavrulmuş</span></div>
+                    
+                    <div class="price-list">
+                        <div class="price-row"><span class="size-label">Fincan</span> <span class="price-label">60 ₺</span></div>
+                        <div class="price-row"><span class="size-label">Duble</span> <span class="price-label">80 ₺</span></div>
+                    </div>
+                </div>
             </div>
 
             <div class="drink-item">
                 <img src="images/cay.jpg" alt="Çay" class="drink-img">
-                <div class="drink-details"><div class="drink-left"><span class="drink-name">Çay</span><span class="drink-desc">Taze demli</span></div><span class="drink-price">25 ₺</span></div>
+                <div class="drink-details">
+                    <div class="drink-left"><span class="drink-name">Çay</span><span class="drink-desc">Taze demli</span></div>
+                    <span class="drink-price">25 ₺</span>
+                </div>
             </div>
         </div>
 
